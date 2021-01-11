@@ -1,4 +1,4 @@
-function h = extract_ismrmrd_parameters_from_img_headers(headtmp)
+function h = extract_ismrmrd_parameters_from_img_headers(headtmp,connection_header)
 %create_nifti_parameters : function that returns a structure h which
 %contains parameters needed for conversion function
 
@@ -6,17 +6,17 @@ function h = extract_ismrmrd_parameters_from_img_headers(headtmp)
 first_index_not_empty = 1;
 last_index_not_empty = 1;%size(headtmp.phase_dir,2);
 
-head.phase_dir = headtmp.phase_dir(:,first_index_not_empty);
-head.read_dir = headtmp.read_dir(:,first_index_not_empty);
-head.slice_dir = headtmp.slice_dir(:,first_index_not_empty);
+head.phase_dir = headtmp.phase_dir;
+head.read_dir = headtmp.read_dir;
+head.slice_dir = headtmp.slice_dir;
 
-hdr.encoding.reconSpace.fieldOfView_mm.x = double(headtmp.field_of_view(1,first_index_not_empty));
-hdr.encoding.reconSpace.fieldOfView_mm.y = double(headtmp.field_of_view(2,first_index_not_empty));
-hdr.encoding.reconSpace.fieldOfView_mm.z = double(headtmp.field_of_view(3,first_index_not_empty));
+hdr.encoding.reconSpace.fieldOfView_mm.x = connection_header.encoding.reconSpace.fieldOfView_mm.x;
+hdr.encoding.reconSpace.fieldOfView_mm.y = connection_header.encoding.reconSpace.fieldOfView_mm.y;
+hdr.encoding.reconSpace.fieldOfView_mm.z = connection_header.encoding.reconSpace.fieldOfView_mm.z;
 
-hdr.encoding.reconSpace.matrixSize.x = double(headtmp.matrix_size(1,first_index_not_empty));
-hdr.encoding.reconSpace.matrixSize.y = double(headtmp.matrix_size(2,first_index_not_empty));
-hdr.encoding.reconSpace.matrixSize.z = double(headtmp.matrix_size(3,first_index_not_empty));
+hdr.encoding.reconSpace.matrixSize.x = connection_header.encoding.reconSpace.matrixSize.x;
+hdr.encoding.reconSpace.matrixSize.y = connection_header.encoding.reconSpace.matrixSize.y;
+hdr.encoding.reconSpace.matrixSize.z = connection_header.encoding.reconSpace.matrixSize.z;
 
 head.position = headtmp.position;
 
@@ -42,7 +42,7 @@ h.PixelSpacing = [hdr.encoding.reconSpace.fieldOfView_mm.x / hdr.encoding.reconS
                   hdr.encoding.reconSpace.fieldOfView_mm.y / hdr.encoding.reconSpace.matrixSize.y ]';
               
 % % ImagePositionPatient of first slice 
-% % Attention peut-être que faut changer les +/-
+% % Attention peut-??tre que faut changer les +/-
 % % en fonction de HFS dans : hdr.measurementInformation.patientPosition
 
 
